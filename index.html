@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newburgh Internships to You Digital Hub</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: {
+    necsd: { dark: '#071326', DEFAULT: '#001F3F', light: '#0d2d54' },
+    goldback: { DEFAULT: '#D4AF37', hover: '#b89528', light: '#fff8df' }
+  },
+  fontFamily: { sans: ['Inter', 'sans-serif'] }
+}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font Awesome as a script: swaps every <i class="fa-..."> for an inline SVG, so no font files are needed -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+<style type="text/tailwindcss">
+  @layer components {
+    .card { @apply bg-white p-6 rounded-2xl border border-slate-200 shadow-sm; }
+    .icon-box { @apply w-11 h-11 bg-amber-100 text-goldback rounded-xl flex items-center justify-center text-lg mb-4; }
+    .btn-gold { @apply inline-flex items-center justify-center gap-2 bg-goldback hover:bg-goldback-hover text-slate-900 font-bold px-6 py-3.5 rounded-xl shadow-md transition-all text-sm; }
+    .btn-ghost { @apply inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold px-6 py-3.5 rounded-xl text-sm transition-all; }
+    .nav-link { @apply px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:text-goldback hover:bg-white/5 transition-colors; }
+    .page-hero { @apply bg-gradient-to-b from-necsd-dark to-necsd text-white py-12 sm:py-16 border-b-4 border-goldback text-center px-4; }
+    .tag { @apply inline-flex items-center gap-2 bg-goldback/20 border border-goldback/50 text-goldback px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider; }
+    .field { @apply w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-goldback focus:outline-none; }
+    .field-dark { @apply w-full px-4 py-2.5 rounded-xl bg-necsd-dark border border-slate-700 text-white text-sm focus:ring-2 focus:ring-goldback focus:outline-none; }
+  }
+</style>
+
+<style>
+  body { font-family: 'Inter', sans-serif; }
+
+  /* Page routing: home shows by default; JS adds .routed and toggles .active */
+  .page-view { display: none; }
+  #page-home { display: block; } /* fallback if JS is off; JS sets inline display below */
+  .route-target { position: absolute; top: -100px; }
+
+  #mobile-menu-toggle:checked ~ #mobile-dropdown { display: block; }
+
+  /* Hero slideshow */
+  .hero-slideshow, .hero-slide { position: absolute; inset: 0; }
+  .hero-slide { background-size: cover; background-position: center; opacity: 0; animation: slideAnimation 16s infinite; }
+  .hero-slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(7,19,38,.85), rgba(0,31,63,.92)); }
+  .hero-slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1600&q=80'); }
+  .hero-slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1600&q=80'); animation-delay: 4s; }
+  .hero-slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1600&q=80'); animation-delay: 8s; }
+  .hero-slide:nth-child(4) { background-image: url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=1600&q=80'); animation-delay: 12s; }
+  @keyframes slideAnimation {
+    0% { opacity: 0; transform: scale(1); } 6%, 25% { opacity: 1; }
+    31% { opacity: 0; transform: scale(1.05); } 100% { opacity: 0; }
+  }
+</style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-goldback selection:text-slate-900">
+
+<div id="home" class="route-target"></div>
+<div id="interns" class="route-target"></div>
+<div id="employers" class="route-target"></div>
+<div id="highlight" class="route-target"></div>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-necsd-dark/95 backdrop-blur-md border-b-2 border-goldback shadow-md">
+  <input type="checkbox" id="mobile-menu-toggle" class="hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 sm:h-20">
+    <a href="#home" class="flex items-center gap-3">
+      <svg class="w-9 h-9 sm:w-10 sm:h-10" viewBox="0 0 100 100" fill="none">
+        <path d="M10 75H90V85H10Z" fill="#D4AF37"/>
+        <path d="M15 75C15 35 85 35 85 75" stroke="#D4AF37" stroke-width="8" stroke-linecap="round"/>
+        <path d="M25 75C25 50 75 50 75 75" stroke="#D4AF37" stroke-width="5"/>
+        <path d="M35 52V75M50 44V75M65 52V75" stroke="#D4AF37" stroke-width="4"/>
+      </svg>
+      <div class="leading-tight">
+        <span class="block text-base sm:text-xl font-extrabold text-white tracking-tight">Newburgh Internships <span class="text-goldback">to You</span></span>
+        <span class="block text-[10px] sm:text-xs font-semibold text-goldback tracking-widest uppercase">Digital Hub</span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-1">
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#interns" class="nav-link">For Interns</a>
+      <a href="#employers" class="nav-link">For Employers</a>
+      <a href="#highlight" class="nav-link flex items-center gap-2">
+        <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-goldback opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-goldback"></span></span>
+        Monthly Event
+      </a>
+    </nav>
+
+    <label for="mobile-menu-toggle" class="md:hidden text-white p-2 text-xl cursor-pointer hover:text-goldback"><i class="fa-solid fa-bars"></i></label>
+  </div>
+
+  <div id="mobile-dropdown" class="hidden md:hidden bg-necsd-dark border-t border-slate-800 px-4 py-3 space-y-1">
+    <a href="#home" onclick="mobile-menu-toggle.checked=false" class="block text-slate-200 font-semibold text-sm py-2 border-b border-slate-800">Home</a>
+    <a href="#interns" onclick="mobile-menu-toggle.checked=false" class="block text-slate-200 font-semibold text-sm py-2 border-b border-slate-800">For Interns</a>
+    <a href="#employers" onclick="mobile-menu-toggle.checked=false" class="block text-slate-200 font-semibold text-sm py-2 border-b border-slate-800">For Employers</a>
+    <a href="#highlight" onclick="mobile-menu-toggle.checked=false" class="block text-goldback font-bold text-sm py-2">Monthly Event</a>
+  </div>
+</header>
+
+<main class="flex-grow">
+
+<!-- ============ HOME ============ -->
+<section id="page-home" class="page-view">
+
+  <!-- Hero -->
+  <div class="relative text-white py-20 sm:py-28 lg:py-36 overflow-hidden border-b-2 border-goldback">
+    <div class="hero-slideshow"><div class="hero-slide"></div><div class="hero-slide"></div><div class="hero-slide"></div><div class="hero-slide"></div></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-5">
+      <span class="tag"><i class="fa-solid fa-network-wired"></i> Digital Hub</span>
+      <h1 class="font-extrabold tracking-tight leading-none">
+        <span class="block text-3xl sm:text-5xl lg:text-6xl">Newburgh Internships to</span>
+        <span class="block text-6xl sm:text-8xl lg:text-9xl text-goldback mt-2">YOU</span>
+      </h1>
+      <p class="text-sm sm:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed">
+        Connecting Newburgh scholars with local professionals to streamline the internship experience and build career opportunities.
+      </p>
+      <div class="pt-3 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="#interns" class="btn-gold">For Interns <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="#employers" class="btn-ghost">For Employers</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Streamline your journey -->
+  <div class="bg-white border-b border-slate-200 py-14 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <span class="text-xs font-bold text-goldback uppercase tracking-wider">What we offer</span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-necsd mt-1 mb-6">Streamline Your Internship Journey</h2>
+        <ul class="space-y-4 text-slate-700">
+          <li class="flex gap-3"><i class="fa-solid fa-circle-check text-goldback mt-1"></i> Industry-specific skill assessments</li>
+          <li class="flex gap-3"><i class="fa-solid fa-circle-check text-goldback mt-1"></i> Networking and mentorship guides</li>
+          <li class="flex gap-3"><i class="fa-solid fa-circle-check text-goldback mt-1"></i> Professional resume optimization</li>
+          <li class="flex gap-3"><i class="fa-solid fa-circle-check text-goldback mt-1"></i> Interview preparation resources</li>
+        </ul>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <a href="#interns" class="card hover:border-goldback hover:shadow-md transition text-center">
+          <div class="icon-box mx-auto"><i class="fa-solid fa-user-graduate"></i></div>
+          <h3 class="font-bold text-necsd">For Interns</h3>
+          <p class="text-xs text-slate-500 mt-1">Explore paths, build a resume, meet mentors.</p>
+        </a>
+        <a href="#employers" class="card hover:border-goldback hover:shadow-md transition text-center">
+          <div class="icon-box mx-auto"><i class="fa-solid fa-building"></i></div>
+          <h3 class="font-bold text-necsd">For Employers</h3>
+          <p class="text-xs text-slate-500 mt-1">Host interns and guide Newburgh scholars.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOBS / CAREERS SECTION -->
+  <div class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+      <span class="text-xs font-bold text-goldback uppercase tracking-wider">Explore Careers</span>
+      <h2 class="text-2xl sm:text-4xl font-bold text-slate-900 mt-1">Find a Job Field That Fits You</h2>
+      <p class="mt-3 text-sm sm:text-base text-slate-600">Browse different careers we partner with. Click a field to learn more &mdash; Nursing takes you straight to this month's event!</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Nursing: links to the monthly event -->
+      <a href="#highlight" class="card border-2 border-goldback hover:shadow-xl hover:-translate-y-1 transition relative block">
+        <span class="absolute top-4 right-4 tag"><i class="fa-solid fa-star"></i> This Month</span>
+        <div class="icon-box"><i class="fa-solid fa-user-nurse"></i></div>
+        <h3 class="text-lg font-bold text-necsd mb-1">Nursing &amp; Healthcare</h3>
+        <p class="text-sm text-slate-600">Clinical shadowing, patient care, and hospital careers. Meet local nurses at our October workshop.</p>
+        <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-goldback">View the Monthly Event <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+
+      <div class="card">
+        <div class="icon-box bg-blue-100 text-necsd"><i class="fa-solid fa-laptop-code"></i></div>
+        <h3 class="text-lg font-bold text-necsd mb-1">Engineering &amp; Tech</h3>
+        <p class="text-sm text-slate-600">Robotics, IT support, and software basics.</p>
+        <span class="mt-4 inline-block text-xs font-semibold text-slate-400 uppercase">Coming Soon</span>
+      </div>
+
+      <div class="card">
+        <div class="icon-box bg-emerald-100 text-emerald-700"><i class="fa-solid fa-briefcase"></i></div>
+        <h3 class="text-lg font-bold text-necsd mb-1">Business &amp; Finance</h3>
+        <p class="text-sm text-slate-600">Banking, accounting, and entrepreneurship.</p>
+        <span class="mt-4 inline-block text-xs font-semibold text-slate-400 uppercase">Coming Soon</span>
+      </div>
+
+      <div class="card">
+        <div class="icon-box bg-orange-100 text-orange-700"><i class="fa-solid fa-helmet-safety"></i></div>
+        <h3 class="text-lg font-bold text-necsd mb-1">Skilled Trades</h3>
+        <p class="text-sm text-slate-600">Electrical, construction, and site safety.</p>
+        <span class="mt-4 inline-block text-xs font-semibold text-slate-400 uppercase">Coming Soon</span>
+      </div>
+
+      <div class="card">
+        <div class="icon-box bg-purple-100 text-purple-700"><i class="fa-solid fa-chalkboard-user"></i></div>
+        <h3 class="text-lg font-bold text-necsd mb-1">Education</h3>
+        <p class="text-sm text-slate-600">Teaching, tutoring, and school administration.</p>
+        <span class="mt-4 inline-block text-xs font-semibold text-slate-400 uppercase">Coming Soon</span>
+      </div>
+
+      <div class="card">
+        <div class="icon-box bg-rose-100 text-rose-700"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 class="text-lg font-bold text-necsd mb-1">Public Service</h3>
+        <p class="text-sm text-slate-600">Law enforcement, fire, EMS, and local government.</p>
+        <span class="mt-4 inline-block text-xs font-semibold text-slate-400 uppercase">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success stories -->
+  <div class="bg-white border-y border-slate-200 py-14 sm:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl sm:text-4xl font-bold text-necsd text-center mb-10">Success Stories</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <figure class="card bg-slate-50"><i class="fa-solid fa-quote-left text-goldback text-2xl mb-3"></i>
+          <blockquote class="text-sm text-slate-700 leading-relaxed">The internship platform was a game-changer for my career. I landed a role at a top-tier firm within weeks of starting.</blockquote>
+          <figcaption class="mt-4 text-xs font-bold text-necsd">A student in Newburgh</figcaption></figure>
+        <figure class="card bg-slate-50"><i class="fa-solid fa-quote-left text-goldback text-2xl mb-3"></i>
+          <blockquote class="text-sm text-slate-700 leading-relaxed">Connecting with top-tier industry leaders through this platform was seamless. The resources provided are truly invaluable.</blockquote>
+          <figcaption class="mt-4 text-xs font-bold text-necsd">A student in Newburgh</figcaption></figure>
+        <figure class="card bg-slate-50"><i class="fa-solid fa-quote-left text-goldback text-2xl mb-3"></i>
+          <blockquote class="text-sm text-slate-700 leading-relaxed">I found my dream internship here. The professional environment and mentorship made all the difference in my growth.</blockquote>
+          <figcaption class="mt-4 text-xs font-bold text-necsd">A student in Newburgh</figcaption></figure>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="bg-necsd text-white py-12 border-b-2 border-goldback">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div><p class="text-3xl sm:text-5xl font-extrabold text-goldback">150+</p><p class="text-xs tracking-widest text-slate-300 mt-1">INTERNSHIPS</p></div>
+      <div><p class="text-3xl sm:text-5xl font-extrabold text-goldback">100%</p><p class="text-xs tracking-widest text-slate-300 mt-1">MATCH RATE</p></div>
+      <div><p class="text-3xl sm:text-5xl font-extrabold text-goldback">500+</p><p class="text-xs tracking-widest text-slate-300 mt-1">INDUSTRIES</p></div>
+      <div><p class="text-3xl sm:text-5xl font-extrabold text-goldback">10K+</p><p class="text-xs tracking-widest text-slate-300 mt-1">SENIORS</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOR INTERNS ============ -->
+<section id="page-interns" class="page-view bg-slate-50 min-h-screen pb-16">
+  <div class="page-hero">
+    <span class="tag"><i class="fa-solid fa-graduation-cap"></i> For Interns</span>
+    <h1 class="text-3xl sm:text-5xl font-extrabold mt-3">Start Your Career Journey</h1>
+    <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mt-3">Discover career pathways, get resume help, and connect with mentors right here at school.</p>
+  </div>
+  <div class="max-w-5xl mx-auto px-4 py-10 sm:py-14 space-y-10">
+    <div>
+      <h2 class="text-xl sm:text-2xl font-bold text-necsd text-center mb-6">How to Get Started in 3 Steps</h2>
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="card"><div class="icon-box font-bold">1</div><h3 class="font-bold text-necsd">Explore Paths</h3><p class="text-sm text-slate-600 mt-1">Pick fields you're interested in&mdash;healthcare, engineering, business, or skilled trades.</p></div>
+        <div class="card"><div class="icon-box font-bold">2</div><h3 class="font-bold text-necsd">Build Your Resume</h3><p class="text-sm text-slate-600 mt-1">Use district templates to make a clean resume for applications and college.</p></div>
+        <div class="card"><div class="icon-box font-bold">3</div><h3 class="font-bold text-necsd">Meet Mentors</h3><p class="text-sm text-slate-600 mt-1">Join monthly school workshops to talk face-to-face with visiting professionals.</p></div>
+      </div>
+    </div>
+    <div class="card space-y-4">
+      <h2 class="text-xl sm:text-2xl font-bold text-necsd">Active Career Pathways</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <a href="#highlight" class="p-4 bg-slate-50 rounded-xl border-l-4 border-goldback flex gap-3 hover:bg-goldback-light transition"><i class="fa-solid fa-stethoscope text-goldback text-xl mt-1"></i><div><h4 class="font-bold text-necsd">Healthcare &amp; Nursing</h4><p class="text-xs text-slate-600">Clinical shadowing, hospital work, and lab basics.</p></div></a>
+        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-goldback flex gap-3"><i class="fa-solid fa-laptop-code text-goldback text-xl mt-1"></i><div><h4 class="font-bold text-necsd">Engineering &amp; Tech</h4><p class="text-xs text-slate-600">Robotics, IT infrastructure support, and software basics.</p></div></div>
+        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-goldback flex gap-3"><i class="fa-solid fa-briefcase text-goldback text-xl mt-1"></i><div><h4 class="font-bold text-necsd">Business &amp; Finance</h4><p class="text-xs text-slate-600">Banking operations, accounting intro, and entrepreneurship.</p></div></div>
+        <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-goldback flex gap-3"><i class="fa-solid fa-compass-drafting text-goldback text-xl mt-1"></i><div><h4 class="font-bold text-necsd">Trades &amp; Architecture</h4><p class="text-xs text-slate-600">Drafting, green construction management, and site safety.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOR EMPLOYERS ============ -->
+<section id="page-employers" class="page-view bg-slate-50 min-h-screen pb-16">
+  <div class="page-hero">
+    <span class="tag">For Employers &amp; Mentors</span>
+    <h1 class="text-3xl sm:text-5xl font-extrabold mt-3">Help Guide Newburgh Scholars</h1>
+    <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mt-3">Connect with eager high school students and help train the next generation of professionals in the Hudson Valley.</p>
+  </div>
+  <div class="max-w-6xl mx-auto px-4 py-10 sm:py-14 grid lg:grid-cols-2 gap-8 items-start">
+    <div class="space-y-4">
+      <div class="card"><h3 class="text-lg font-bold text-necsd">🤝 Host High School Interns</h3><p class="text-sm text-slate-600">Offer internship spots for students to learn directly on the job.</p></div>
+      <div class="card"><h3 class="text-lg font-bold text-necsd">🎤 Guest Speaker Workshops</h3><p class="text-sm text-slate-600">Join our monthly high school workshops (like our Nursing session) and talk with students for an hour.</p></div>
+      <div class="card"><h3 class="text-lg font-bold text-necsd">💡 Mentor Students</h3><p class="text-sm text-slate-600">Share quick tips, review student projects, or give real-world advice.</p></div>
+    </div>
+    <div class="card border-2 border-goldback">
+      <h3 class="text-xl font-bold text-necsd">Mentor Signup Form</h3>
+      <p class="text-sm text-slate-600 mb-5">Let us know if you'd like to drop by a workshop or host an intern!</p>
+      <form onsubmit="alert('Thank you for registering!'); return false;" class="space-y-4">
+        <input class="field" required placeholder="Company / Organization Name">
+        <input class="field" required placeholder="Your Name">
+        <input class="field" type="email" required placeholder="Email Address">
+        <input class="field" required placeholder="Industry Field (e.g. Healthcare, Engineering)">
+        <button class="w-full bg-necsd hover:bg-necsd-light text-white font-bold py-3.5 rounded-xl shadow-md transition text-sm">Submit Partner Interest</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MONTHLY EVENT (NURSING) ============ -->
+<section id="page-highlight" class="page-view bg-slate-50 min-h-screen pb-16">
+  <div class="page-hero">
+    <span class="tag"><i class="fa-solid fa-star"></i> Monthly Career Highlight</span>
+    <h1 class="text-3xl sm:text-5xl font-extrabold mt-3">Nursing &amp; Healthcare Workshop</h1>
+    <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mt-3">Connect with visiting nurses, learn about clinical programs, and discover local healthcare opportunities right here at school.</p>
+  </div>
+  <div class="max-w-5xl mx-auto px-4 py-10 space-y-8">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div class="card"><div class="icon-box mx-auto"><i class="fa-solid fa-calendar-day"></i></div><span class="text-xs text-slate-400 font-semibold uppercase block">Date</span><span class="text-sm font-bold text-necsd">Friday, Oct 23</span></div>
+      <div class="card"><div class="icon-box mx-auto"><i class="fa-solid fa-clock"></i></div><span class="text-xs text-slate-400 font-semibold uppercase block">Time</span><span class="text-sm font-bold text-necsd">3:30 - 5:00 PM</span></div>
+      <div class="card"><div class="icon-box mx-auto"><i class="fa-solid fa-door-open"></i></div><span class="text-xs text-slate-400 font-semibold uppercase block">Room</span><span class="text-sm font-bold text-necsd">Room 101</span></div>
+      <div class="card"><div class="icon-box mx-auto"><i class="fa-solid fa-ticket"></i></div><span class="text-xs text-slate-400 font-semibold uppercase block">Cost</span><span class="text-sm font-bold text-necsd">100% Free</span></div>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-8 items-start">
+      <div class="lg:col-span-3 space-y-6">
+        <div class="card space-y-3">
+          <h3 class="text-lg font-bold text-necsd flex items-center gap-2"><i class="fa-solid fa-stethoscope text-goldback"></i> What We'll Be Covering</h3>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex gap-3"><i class="fa-solid fa-check text-goldback mt-1"></i><span><strong>Career Pathways:</strong> Learn the difference between RN, BSN, and Nurse Practitioner tracks.</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-check text-goldback mt-1"></i><span><strong>Local Internships:</strong> How to apply for senior shadowing opportunities at nearby health centers.</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-check text-goldback mt-1"></i><span><strong>Hands-on Demo:</strong> Try out basic clinical equipment and learn how to take vitals.</span></li>
+          </ul>
+        </div>
+        <div class="card space-y-3">
+          <h3 class="text-lg font-bold text-necsd flex items-center gap-2"><i class="fa-solid fa-user-doctor text-goldback"></i> Guest Speakers</h3>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-goldback"><h4 class="font-bold text-sm">Dr. Jane Doe, RN</h4><p class="text-[10px] text-goldback font-semibold uppercase">Clinical Specialist</p></div>
+            <div class="p-4 bg-slate-50 rounded-xl border-l-4 border-goldback"><h4 class="font-bold text-sm">Dr. Alex Taylor, PA</h4><p class="text-[10px] text-goldback font-semibold uppercase">Physician Assistant</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 bg-necsd text-white p-7 rounded-2xl shadow-xl border-2 border-goldback space-y-4">
+        <div>
+          <span class="text-[10px] font-bold text-goldback uppercase tracking-wider">Student Sign-Up</span>
+          <h3 class="text-2xl font-extrabold">Reserve Your Seat</h3>
+          <p class="text-xs text-slate-300 mt-1">Space in Room 101 is limited. Fill this out to secure your spot for Oct 23!</p>
+        </div>
+        <form onsubmit="alert('RSVP Confirmed! See you in Room 101!'); return false;" class="space-y-3">
+          <input class="field-dark" required placeholder="Full Name">
+          <input class="field-dark" type="email" required placeholder="School Email">
+          <select class="field-dark"><option>11th Grade (Junior)</option><option selected>12th Grade (Senior)</option></select>
+          <button class="w-full bg-goldback hover:bg-goldback-hover text-slate-900 font-bold py-3.5 rounded-xl shadow-md transition text-sm">Confirm RSVP</button>
+        </form>
+      </div>
+    </div>
+    <div class="text-center"><a href="#home" class="text-sm font-semibold text-necsd hover:text-goldback"><i class="fa-solid fa-arrow-left"></i> Back to all careers</a></div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-necsd-dark text-slate-400 border-t-2 border-goldback">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid md:grid-cols-3 gap-10">
+    <div>
+      <p class="text-white font-extrabold text-lg">Newburgh Internships <span class="text-goldback">to You</span></p>
+      <p class="text-xs uppercase tracking-widest text-goldback mb-3">Digital Hub</p>
+      <p class="text-sm">Empowering the next generation of industry leaders through curated, high-impact internship opportunities.</p>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-3">Quick Links</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#home" class="hover:text-goldback">Home</a></li>
+        <li><a href="#interns" class="hover:text-goldback">For Interns</a></li>
+        <li><a href="#employers" class="hover:text-goldback">For Employers</a></li>
+        <li><a href="#highlight" class="hover:text-goldback">Monthly Event</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-3">Contact</h4>
+      <ul class="space-y-2 text-sm">
+        <li><i class="fa-solid fa-envelope w-5 text-goldback"></i> hello@internshiptoyou.com</li>
+        <li><i class="fa-solid fa-phone w-5 text-goldback"></i> +1 (111) 111-1111</li>
+        <li><i class="fa-solid fa-location-dot w-5 text-goldback"></i> Newburgh, NY</li>
+      </ul>
+      <div class="flex gap-4 mt-4 text-lg">
+        <a href="https://www.facebook.com" class="hover:text-goldback" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.instagram.com" class="hover:text-goldback" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.youtube.com" class="hover:text-goldback" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.linkedin.com" class="hover:text-goldback" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://www.tiktok.com" class="hover:text-goldback" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-slate-800 py-5 text-center text-xs text-slate-500">&copy; 2026 Newburgh Internships to You Digital Hub. All rights reserved.</div>
+</footer>
+
+<script>
+  // Simple page router: works on GitHub Pages and inside sandboxed previews
+  (function () {
+    var pages = ['home', 'interns', 'employers', 'highlight'];
+    function show(name) {
+      if (pages.indexOf(name) === -1) name = 'home';
+      document.body.classList.add('routed');
+      pages.forEach(function (p) {
+        document.getElementById('page-' + p).style.display = (p === name) ? 'block' : 'none';
+      });
+      var toggle = document.getElementById('mobile-menu-toggle');
+      if (toggle) toggle.checked = false;
+      window.scrollTo(0, 0);
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var name = a.getAttribute('href').slice(1);
+      if (pages.indexOf(name) === -1) return;
+      e.preventDefault();
+      try { history.replaceState(null, '', '#' + name); } catch (err) {}
+      show(name);
+    });
+    window.addEventListener('hashchange', function () { show(location.hash.slice(1)); });
+    show(location.hash.slice(1) || 'home');
+  })();
+</script>
+
+</body>
+</html>
